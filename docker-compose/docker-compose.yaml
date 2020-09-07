@@ -1,0 +1,73 @@
+version: '3.5'
+
+services:
+  tdengine_cluster_init:
+    image: docker.flexem.com/library/tdengine:2.0.3.0
+    restart: "no"
+    container_name: tdengine_cluster_init
+    command: bash +x /root/cluster_init.sh tdengine_1:6030 tdengine_2:6030
+    environment:
+      firstEp: tdengine_0:6030
+      secondEp: tdengine_1:6030
+    depends_on:
+      - tdengine_0
+  tdengine_0:
+    image: docker.flexem.com/library/tdengine:2.0.3.0
+    restart: always
+    container_name: tdengine_0
+    environment:
+      firstEp: tdengine_0:6030
+      secondEp: tdengine_1:6030
+      fqdn: tdengine_0
+      serverPort: 6030
+    ports:
+      - 6030:6030
+      - 6035:6035
+      - 6041:6041
+      - 6030-6040:6030-6040/udp
+    volumes:
+      - /opt/tdengine/0/lib:/var/lib/taos
+      - /opt/tdengine/0/log:/var/log/taos
+  tdengine_1:
+    image: docker.flexem.com/library/tdengine:2.0.3.0
+    restart: always
+    container_name: tdengine_1
+    environment:
+      firstEp: tdengine_0:6030
+      secondEp: tdengine_1:6030
+      fqdn: tdengine_1
+      serverPort: 6030
+    ports:
+      - 6130:6030
+      - 6135:6035
+      - 6141:6041
+      - 6130-6140:6030-6040/udp
+    depends_on:
+      - tdengine_0
+    volumes:
+      - /opt/tdengine/1/lib:/var/lib/taos
+      - /opt/tdengine/1/log:/var/log/taos
+  tdengine_2:
+    image: docker.flexem.com/library/tdengine:2.0.3.0
+    restart: always
+    container_name: tdengine_2
+    environment:
+      firstEp: tdengine_0:6030
+      secondEp: tdengine_1:6030
+      fqdn: tdengine_2
+      serverPort: 6030
+    ports:
+      - 6230:6030
+      - 6235:6035
+      - 6241:6041
+      - 6230-6240:6030-6040/udp
+    depends_on:
+      - tdengine_0
+    volumes:
+      - /opt/tdengine/2/lib:/var/lib/taos
+      - /opt/tdengine/2/log:/var/log/taos
+
+networks:
+  default:
+    external: true
+    name: localnet

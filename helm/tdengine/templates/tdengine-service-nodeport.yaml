@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "tdengine.fullname" . }}-np"
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: {{ template "tdengine.chart" . }}
+    component: "{{ .Release.Name }}-{{ .Values.Component }}"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: tcp6030
+    protocol: "TCP"
+    port: 6030
+  - name: tcp6035
+    protocol: "TCP"
+    port: 6035
+  - name: tcp6041
+    protocol: "TCP"
+    port: 6041
+  type: NodePort
+  selector:
+    component: "{{ .Release.Name }}-{{ .Values.Component }}"

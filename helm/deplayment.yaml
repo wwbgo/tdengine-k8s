@@ -1,0 +1,263 @@
+---
+# Source: tdengine/templates/tdengine-service-nodeport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "tdengine-np"
+  labels:
+    heritage: "Helm"
+    release: "tdengine"
+    chart: tdengine-2.0.2
+    component: "tdengine-tdengine"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: tcp6030
+    protocol: "TCP"
+    port: 6030
+  - name: tcp6035
+    protocol: "TCP"
+    port: 6035
+  - name: tcp6041
+    protocol: "TCP"
+    port: 6041
+  type: NodePort
+  selector:
+    component: "tdengine-tdengine"
+---
+# Source: tdengine/templates/tdengine-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "tdengine"
+  labels:
+    heritage: "Helm"
+    release: "tdengine"
+    chart: tdengine-2.0.2
+    component: "tdengine-tdengine"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: tcp6030
+    protocol: "TCP"
+    port: 6030
+  - name: tcp6035
+    protocol: "TCP"
+    port: 6035
+  - name: tcp6041
+    protocol: "TCP"
+    port: 6041
+  - name: udp6030
+    protocol: "UDP"
+    port: 6030
+  - name: udp6031
+    protocol: "UDP"
+    port: 6031
+  - name: udp6032
+    protocol: "UDP"
+    port: 6032
+  - name: udp6033
+    protocol: "UDP"
+    port: 6033
+  - name: udp6034
+    protocol: "UDP"
+    port: 6034
+  - name: udp6035
+    protocol: "UDP"
+    port: 6035
+  - name: udp6036
+    protocol: "UDP"
+    port: 6036
+  - name: udp6037
+    protocol: "UDP"
+    port: 6037
+  - name: udp6038
+    protocol: "UDP"
+    port: 6038
+  - name: udp6039
+    protocol: "UDP"
+    port: 6039
+  - name: udp6040
+    protocol: "UDP"
+    port: 6040
+  clusterIP: None
+  selector:
+    component: "tdengine-tdengine"
+---
+# Source: tdengine/templates/tdengine-init.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "tdengine-init-hz0qa"
+  labels:
+    heritage: "Helm"
+    release: "tdengine"
+    chart: tdengine-2.0.2
+    component: "tdengine-tdengine"
+spec:
+  containers:
+    - name: "tdengine-init"
+      image: "docker.flexem.com/library/tdengine:2.0.3.0"
+      command: ["bash", "+x", "/root/cluster_init.sh","tdengine-1.tdengine:6030","tdengine-2.tdengine:6030"]
+      env:
+        - name: STATEFULSET_NAME
+          value: "tdengine"
+        - name: serverPort
+          value: "6030"
+        - name: firstEp
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME):$(serverPort)"
+        - name: secondEp
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME):$(serverPort)"
+  restartPolicy: Never
+---
+# Source: tdengine/templates/tdengine-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "tdengine"
+  labels:
+    heritage: "Helm"
+    release: "tdengine"
+    chart: tdengine-2.0.2
+    component: "tdengine-tdengine"
+spec:
+  serviceName: "tdengine"
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      release: "tdengine"
+      component: "tdengine-tdengine"
+  template:
+    metadata:
+      name: "tdengine"
+      labels:
+        heritage: "Helm"
+        release: "tdengine"
+        chart: tdengine-2.0.2
+        component: "tdengine-tdengine"
+    spec:
+      securityContext:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - 192.168.50.67
+                - 192.168.50.68
+                - 192.168.50.69
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - "tdengine-tdengine"
+        
+      tolerations:
+        - effect: NoSchedule
+          key: type
+          operator: Equal
+          value: basic
+      containers:
+      - name: "tdengine"
+        image: "docker.flexem.com/library/tdengine:2.0.3.0"
+        imagePullPolicy: "Always"
+        ports:
+        - name: tcp6030
+          protocol: "TCP"
+          containerPort: 6030
+        - name: tcp6035
+          protocol: "TCP"
+          containerPort: 6035
+        - name: tcp6041
+          protocol: "TCP"
+          containerPort: 6041
+        - name: udp6030
+          protocol: "UDP"
+          containerPort: 6030
+        - name: udp6031
+          protocol: "UDP"
+          containerPort: 6031
+        - name: udp6032
+          protocol: "UDP"
+          containerPort: 6032
+        - name: udp6033
+          protocol: "UDP"
+          containerPort: 6033
+        - name: udp6034
+          protocol: "UDP"
+          containerPort: 6034
+        - name: udp6035
+          protocol: "UDP"
+          containerPort: 6035
+        - name: udp6036
+          protocol: "UDP"
+          containerPort: 6036
+        - name: udp6037
+          protocol: "UDP"
+          containerPort: 6037
+        - name: udp6038
+          protocol: "UDP"
+          containerPort: 6038
+        - name: udp6039
+          protocol: "UDP"
+          containerPort: 6039
+        - name: udp6040
+          protocol: "UDP"
+          containerPort: 6040
+        resources:
+          {}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: STATEFULSET_NAME
+          value: "tdengine"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: STATEFULSET_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: serverPort
+          value: "6030"
+        - name: firstEp
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME):$(serverPort)"
+        - name: secondEp
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME):$(serverPort)"
+        - name: fqdn
+          value: "$(POD_NAME).$(STATEFULSET_NAME)"
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/taos
+        livenessProbe:
+          exec:
+            command:
+            - taos
+            - -s
+            - "show dnodes"
+          initialDelaySeconds: 300
+          timeoutSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: "10Gi"

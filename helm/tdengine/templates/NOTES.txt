@@ -1,0 +1,7 @@
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace={{ .Release.Namespace }} -w
+2. Test cluster health using Helm test.
+  $ helm test {{ template "tdengine.fullname" . }}
+3. (Optional) Manually confirm tdengine cluster is healthy.
+  $ TDENGINE_POD=$(kubectl get pods -l='release={{ template "tdengine.fullname" . }}' --output=jsonpath={.items[0].metadata.name})
+  $ kubectl exec $EDENGINE_POD tdengine members --namespace={{ .Release.Namespace }} | grep server

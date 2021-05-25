@@ -1,4 +1,5 @@
-FROM tdengine/tdengine:2.0.3.0
+ARG ver
+FROM docker.flexem.com/library/tdengine-base:$ver
 
 WORKDIR /root
 COPY run.sh run.sh

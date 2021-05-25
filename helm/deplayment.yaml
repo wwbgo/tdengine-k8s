@@ -7,7 +7,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.0.2
+    chart: tdengine-2.1.1
     component: "tdengine-tdengine"
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -34,7 +34,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.0.2
+    chart: tdengine-2.1.1
     component: "tdengine-tdengine"
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -94,22 +94,26 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.0.2
+    chart: tdengine-2.1.1
     component: "tdengine-tdengine"
 spec:
   containers:
     - name: "tdengine-init"
-      image: "docker.flexem.com/library/tdengine:2.0.3.0"
-      command: ["bash", "+x", "/root/cluster_init.sh","tdengine-1.tdengine:6030","tdengine-2.tdengine:6030"]
+      image: "docker.flexem.com/library/tdengine:2.1.2"
+      command: ["bash", "+x", "/root/cluster_init.sh","tdengine-1.tdengine.default.svc.cluster.local:6030","tdengine-2.tdengine.default.svc.cluster.local:6030"]
       env:
         - name: STATEFULSET_NAME
           value: "tdengine"
+        - name: STATEFULSET_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: serverPort
           value: "6030"
         - name: firstEp
-          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
         - name: secondEp
-          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
   restartPolicy: Never
 ---
 # Source: tdengine/templates/tdengine-statefulset.yaml
@@ -120,7 +124,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.0.2
+    chart: tdengine-2.1.1
     component: "tdengine-tdengine"
 spec:
   serviceName: "tdengine"
@@ -137,7 +141,7 @@ spec:
       labels:
         heritage: "Helm"
         release: "tdengine"
-        chart: tdengine-2.0.2
+        chart: tdengine-2.1.1
         component: "tdengine-tdengine"
     spec:
       securityContext:
@@ -171,7 +175,7 @@ spec:
           value: basic
       containers:
       - name: "tdengine"
-        image: "docker.flexem.com/library/tdengine:2.0.3.0"
+        image: "docker.flexem.com/library/tdengine:2.1.2"
         imagePullPolicy: "Always"
         ports:
         - name: tcp6030
@@ -236,11 +240,11 @@ spec:
         - name: serverPort
           value: "6030"
         - name: firstEp
-          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
         - name: secondEp
-          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
         - name: fqdn
-          value: "$(POD_NAME).$(STATEFULSET_NAME)"
+          value: "$(POD_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local"
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/taos

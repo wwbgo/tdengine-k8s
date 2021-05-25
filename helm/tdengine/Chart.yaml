@@ -1,7 +1,7 @@
 apiVersion: v1
 name: tdengine
 home: https://www.taosdata.com
-version: 2.0.2
+version: 2.1.1
 appVersion: 1.0.0
 description: TDengine is an open-sourced big data platform under GNU AGPL v3.0, designed and optimized for the Internet of Things (IoT), Connected Cars, Industrial IoT, and IT Infrastructure and Application Monitoring. Besides the 10x faster time-series database, it provides caching, stream computing, message queuing and other functionalities to reduce the complexity and cost of development and operation.
 icon: https://www.taosdata.com/images/taosdata-logo.png

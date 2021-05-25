@@ -118,11 +118,11 @@ spec:
         - name: serverPort
           value: "6030"
         - name: firstEp
-          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
         - name: secondEp
-          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME):$(serverPort)"
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
         - name: fqdn
-          value: "$(POD_NAME).$(STATEFULSET_NAME)"
+          value: "$(POD_NAME).$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local"
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/taos

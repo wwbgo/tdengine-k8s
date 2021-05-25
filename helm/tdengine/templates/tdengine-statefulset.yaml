@@ -115,13 +115,13 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: serverPort
+        - name: TAOS_serverPort
           value: "6030"
-        - name: firstEp
-          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
-        - name: secondEp
-          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(serverPort)"
-        - name: fqdn
+        - name: TAOS_firstEp
+          value: "$(STATEFULSET_NAME)-0.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(TAOS_serverPort)"
+        - name: TAOS_secondEp
+          value: "$(STATEFULSET_NAME)-1.$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local:$(TAOS_serverPort)"
+        - name: TAOS_fqdn
           value: "$(POD_NAME).$(STATEFULSET_NAME).$(STATEFULSET_NAMESPACE).svc.cluster.local"
         volumeMounts:
         - name: datadir

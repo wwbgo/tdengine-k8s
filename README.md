@@ -2,16 +2,19 @@
 taos,tdengine,docker,k8s
 
 # TDengine cluster for kubernetes 
-使用Helm安装TDengine集群 
+使用Helm安装TDengine集群
+
 使用git拉取代码,切换到helm目录,使用 `helm install` 安装即可
 
 # TDengine cluster for docker 
-使用Docker-compose运行TDengine集群 
+使用Docker-compose运行TDengine集群
+
 直接将docker-compose.yaml文件下载到本地,然后使用 `docker-compose up -d` 命令运行即可 
 
 ### 通过环境变量配置taos.cfg参数 
-docker-compse: environment节点添加 `TAOS_[variable]`, 例如: TAOS_firstEp 
-kubernetes: env节点添加 `TAOS_[variable]`, 例如: TAOS_fqdn 
+docker-compse: environment节点添加 `TAOS_[variable]`, 例如: TAOS_firstEp
+
+kubernetes: env节点添加 `TAOS_[variable]`, 例如: TAOS_fqdn
 
 # What is TDengine？
 

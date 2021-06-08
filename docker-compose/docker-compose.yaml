@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   tdengine_cluster_init:
-    image: docker.flexem.com/library/tdengine:2.1.1.2
+    image: docker.flexem.com/library/tdengine:2.1.2.0
     restart: "no"
     container_name: tdengine_cluster_init
     command: bash +x /root/cluster_init.sh tdengine_1:6030 tdengine_2:6030
@@ -12,7 +12,7 @@ services:
     depends_on:
       - tdengine_0
   tdengine_0:
-    image: docker.flexem.com/library/tdengine:2.1.1.2
+    image: docker.flexem.com/library/tdengine:2.1.2.0
     restart: always
     container_name: tdengine_0
     environment:
@@ -29,7 +29,7 @@ services:
       - /opt/tdengine/0/lib:/var/lib/taos
       - /opt/tdengine/0/log:/var/log/taos
   tdengine_1:
-    image: docker.flexem.com/library/tdengine:2.1.1.2
+    image: docker.flexem.com/library/tdengine:2.1.2.0
     restart: always
     container_name: tdengine_1
     environment:
@@ -48,7 +48,7 @@ services:
       - /opt/tdengine/1/lib:/var/lib/taos
       - /opt/tdengine/1/log:/var/log/taos
   tdengine_2:
-    image: docker.flexem.com/library/tdengine:2.1.1.2
+    image: docker.flexem.com/library/tdengine:2.1.2.0
     restart: always
     container_name: tdengine_2
     environment:

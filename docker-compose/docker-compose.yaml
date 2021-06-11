@@ -5,10 +5,9 @@ services:
     image: docker.flexem.com/library/tdengine:2.1.2.0
     restart: "no"
     container_name: tdengine_cluster_init
-    command: bash +x /root/cluster_init.sh tdengine_1:6030 tdengine_2:6030
+    command: bash +x /root/cluster_init.sh tdengine_1:6130 tdengine_2:6230
     environment:
       TAOS_firstEp: tdengine_0:6030
-      TAOS_secondEp: tdengine_1:6030
     depends_on:
       - tdengine_0
   tdengine_0:
@@ -17,14 +16,11 @@ services:
     container_name: tdengine_0
     environment:
       TAOS_firstEp: tdengine_0:6030
-      TAOS_secondEp: tdengine_1:6030
       TAOS_fqdn: tdengine_0
       TAOS_serverPort: 6030
     ports:
-      - 6030:6030
-      - 6035:6035
-      - 6041:6041
-      - 6030-6040:6030-6040/udp
+      - 6030-6042:6030-6042/tcp
+      - 6030-6042:6030-6042/udp
     volumes:
       - /opt/tdengine/0/lib:/var/lib/taos
       - /opt/tdengine/0/log:/var/log/taos
@@ -34,14 +30,11 @@ services:
     container_name: tdengine_1
     environment:
       TAOS_firstEp: tdengine_0:6030
-      TAOS_secondEp: tdengine_1:6030
       TAOS_fqdn: tdengine_1
-      TAOS_serverPort: 6030
+      TAOS_serverPort: 6130
     ports:
-      - 6130:6030
-      - 6135:6035
-      - 6141:6041
-      - 6130-6140:6030-6040/udp
+      - 6130-6142:6130-6142/tcp
+      - 6130-6142:6130-6142/udp
     depends_on:
       - tdengine_0
     volumes:
@@ -53,14 +46,11 @@ services:
     container_name: tdengine_2
     environment:
       TAOS_firstEp: tdengine_0:6030
-      TAOS_secondEp: tdengine_1:6030
       TAOS_fqdn: tdengine_2
-      TAOS_serverPort: 6030
+      TAOS_serverPort: 6230
     ports:
-      - 6230:6030
-      - 6235:6035
-      - 6241:6041
-      - 6230-6240:6030-6040/udp
+      - 6230-6242:6230-6242/tcp
+      - 6230-6242:6230-6242/udp
     depends_on:
       - tdengine_0
     volumes:

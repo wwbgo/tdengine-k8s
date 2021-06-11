@@ -14,12 +14,42 @@ spec:
   - name: tcp6030
     protocol: "TCP"
     port: 6030
+  - name: tcp6031
+    protocol: "TCP"
+    port: 6031
+  - name: tcp6032
+    protocol: "TCP"
+    port: 6032
+  - name: tcp6033
+    protocol: "TCP"
+    port: 6033
+  - name: tcp6034
+    protocol: "TCP"
+    port: 6034
   - name: tcp6035
     protocol: "TCP"
     port: 6035
+  - name: tcp6036
+    protocol: "TCP"
+    port: 6036
+  - name: tcp6037
+    protocol: "TCP"
+    port: 6037
+  - name: tcp6038
+    protocol: "TCP"
+    port: 6038
+  - name: tcp6039
+    protocol: "TCP"
+    port: 6039
+  - name: tcp6040
+    protocol: "TCP"
+    port: 6040
   - name: tcp6041
     protocol: "TCP"
     port: 6041
+  - name: tcp6042
+    protocol: "TCP"
+    port: 6042
   - name: udp6030
     protocol: "UDP"
     port: 6030
@@ -53,6 +83,12 @@ spec:
   - name: udp6040
     protocol: "UDP"
     port: 6040
+  - name: udp6041
+    protocol: "UDP"
+    port: 6041
+  - name: udp6042
+    protocol: "UDP"
+    port: 6042
   clusterIP: None
   selector:
     component: "{{ .Release.Name }}-{{ .Values.Component }}"

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
 
-ver=2.1.2.0
-docker build --rm -f Dockerfile.base --build-arg ver=${ver} -t docker.flexem.com/library/tdengine-base:$ver .
-docker push docker.flexem.com/library/tdengine-base:$ver
+ver=2.1.3.0
+docker build --rm -f Dockerfile.base --build-arg ver=${ver} -t wwbgo/tdengine:base-$ver .
+docker push wwbgo/tdengine:base-$ver

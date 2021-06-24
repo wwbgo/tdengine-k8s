@@ -10,8 +10,8 @@ Domain: tdengine
 ## Used as selector
 Component: "tdengine"
 Replicas: 3
-Image: "docker.flexem.com/library/tdengine"
-ImageTag: "2.1.2.0"
+Image: "wwbgo/tdengine"
+ImageTag: "2.1.3.0"
 ImagePullPolicy: "Always"
 Resources: {}
  # requests:

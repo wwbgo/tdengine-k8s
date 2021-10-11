@@ -7,7 +7,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.1.3.0
+    chart: tdengine-2.2.0.5
     component: "tdengine-tdengine"
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -34,7 +34,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.1.3.0
+    chart: tdengine-2.2.0.5
     component: "tdengine-tdengine"
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
@@ -94,12 +94,12 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.1.3.0
+    chart: tdengine-2.2.0.5
     component: "tdengine-tdengine"
 spec:
   containers:
     - name: "tdengine-init"
-      image: "wwbgo/tdengine:2.1.3.0"
+      image: "wwbgo/tdengine:2.2.0.5"
       command: ["bash", "+x", "/root/cluster_init.sh","tdengine-1.tdengine.default.svc.cluster.local:6030","tdengine-2.tdengine.default.svc.cluster.local:6030"]
       env:
         - name: STATEFULSET_NAME
@@ -124,7 +124,7 @@ metadata:
   labels:
     heritage: "Helm"
     release: "tdengine"
-    chart: tdengine-2.1.3.0
+    chart: tdengine-2.2.0.5
     component: "tdengine-tdengine"
 spec:
   serviceName: "tdengine"
@@ -141,7 +141,7 @@ spec:
       labels:
         heritage: "Helm"
         release: "tdengine"
-        chart: tdengine-2.1.3.0
+        chart: tdengine-2.2.0.5
         component: "tdengine-tdengine"
     spec:
       securityContext:
@@ -175,7 +175,7 @@ spec:
           value: basic
       containers:
       - name: "tdengine"
-        image: "wwbgo/tdengine:2.1.3.0"
+        image: "wwbgo/tdengine:2.2.0.5"
         imagePullPolicy: "Always"
         ports:
         - name: tcp6030

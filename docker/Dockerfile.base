@@ -5,7 +5,8 @@ WORKDIR /root
 ARG ver
 
 COPY bin/TDengine-server-${ver}-Linux-x64.tar.gz /root/
-RUN tar -zxf TDengine-server-${ver}-Linux-x64.tar.gz
+RUN tar -zxf TDengine-server-${ver}-Linux-x64.tar.gz && \
+    rm -rf TDengine-server-${ver}-Linux-x64.tar.gz
 WORKDIR /root/TDengine-server-${ver}/
 RUN /bin/bash install.sh -e no
 

@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+DISABLE_ADAPTER=${TAOS_DISABLE_ADAPTER:-0}
+unset TAOS_DISABLE_ADAPTER
+
+ulimit -c unlimited
+
 echo "# custom variable">/etc/taos/taos.cfg
 # echo "firstEp               $firstEp">>/etc/taos/taos.cfg
 # echo "secondEp              $secondEp">>/etc/taos/taos.cfg
@@ -16,5 +21,9 @@ do
         echo "$key               $val">>/etc/taos/taos.cfg
     fi
 done
+
+if [ "$DISABLE_ADAPTER" = "0" ]; then
+    which taosadapter >/dev/null && taosadapter &
+fi
 
 taosd

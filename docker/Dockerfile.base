@@ -6,12 +6,11 @@ ARG ver
 
 COPY bin/TDengine-server-${ver}-Linux-x64.tar.gz /root/
 RUN tar -zxf TDengine-server-${ver}-Linux-x64.tar.gz && \
-    rm -rf TDengine-server-${ver}-Linux-x64.tar.gz
-WORKDIR /root/TDengine-server-${ver}/
-RUN /bin/bash install.sh -e no
-
-RUN apt-get clean && apt-get update && apt-get install -y locales
-RUN locale-gen en_US.UTF-8
+    rm -rf TDengine-server-${ver}-Linux-x64.tar.gz && \
+    cd /root/TDengine-server-${ver}/ && \
+    /bin/bash install.sh -e no && \
+    apt-get clean && apt-get update && apt-get install -y locales && \
+    locale-gen en_US.UTF-8
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib"
 ENV LC_CTYPE=en_US.UTF-8
 ENV LANG=en_US.UTF-8

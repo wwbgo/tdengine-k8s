@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 WORKDIR /root
 
@@ -9,8 +9,23 @@ RUN tar -zxf TDengine-server-${ver}-Linux-x64.tar.gz && \
     rm -rf TDengine-server-${ver}-Linux-x64.tar.gz && \
     cd /root/TDengine-server-${ver}/ && \
     /bin/bash install.sh -e no && \
-    apt-get clean && apt-get update && apt-get install -y locales && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        locales \
+        tzdata \
+        netcat \
+        curl \
+        gdb \
+        vim \
+        tmux \
+        less \
+        net-tools \
+        valgrind \
+        rsync && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     locale-gen en_US.UTF-8
+
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib"
 ENV LC_CTYPE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
@@ -18,4 +33,4 @@ ENV LC_ALL=en_US.UTF-8
 
 EXPOSE 6030 6031 6032 6033 6034 6035 6036 6037 6038 6039 6040 6041 6042
 CMD ["taosd"]
-VOLUME [ "/var/lib/taos", "/var/log/taos","/etc/taos/" ]
+VOLUME [ "/var/lib/taos", "/var/log/taos","/corefile" ]

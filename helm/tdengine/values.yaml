@@ -11,7 +11,7 @@ Domain: tdengine
 Component: "tdengine"
 Replicas: 3
 Image: "wwbgo/tdengine"
-ImageTag: "3.3.6.0"
+ImageTag: "3.3.7.5"
 ImagePullPolicy: "Always"
 Resources: {}
  # requests:
